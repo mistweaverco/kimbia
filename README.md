@@ -38,7 +38,7 @@ npm install -g @mistweaverco/kimbia
 Start by creating a `kimbia.yaml` file in the root of your project:
 
 ```yaml
-
+---
 tasks:
   - name: build
     description: Build the project
@@ -72,7 +72,6 @@ tasks:
           - windows
         run:
           - tofu deploy
-
 ```
 
 Then run the tasks using the `kimbia` command:

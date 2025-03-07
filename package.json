@@ -1,13 +1,13 @@
 {
   "name": "@mistweaverco/kimbia",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint ."
   },
   "bin": {
-    "kulala-fmt": "dist/cli.cjs"
+    "kimbia": "dist/cli.cjs"
   },
   "files": [
     "dist/cli.cjs"

@@ -14,7 +14,11 @@ interface RunCommandResponse {
   data: string;
 }
 
-function filterTasks(tasknames: string[], tasks: Task[]): string[] {
+function filterTasks(
+  tasknames: string[],
+  tasks: Task[],
+  quiet: boolean = false,
+): string[] {
   return tasknames.filter((taskname: string) => {
     const foundTask = tasks.find((task) => task.name === taskname);
 
@@ -26,18 +30,27 @@ function filterTasks(tasknames: string[], tasks: Task[]): string[] {
       if (isSupported) {
         return true; // Task found and supported
       } else {
-        console.log(
-          chalk.yellow(
-            `🐆 Task "${taskname}" found, but not supported on platform "${PLATFORM}".`,
-          ),
-        );
+        if (!quiet) {
+          console.log(
+            chalk.yellow(
+              `🐆 Task "${taskname}" found, but not supported on platform "${PLATFORM}".`,
+            ),
+          );
+        }
         return false; // Task found, but not supported
       }
     } else {
-      console.log(chalk.red(`🐆 Task not found: ${taskname}`));
-      console.log(chalk.yellow("Available tasks:"));
-      for (const task of tasks) {
-        console.log(chalk.yellow(`- ${task.name}`));
+      if (!quiet) {
+        console.log(chalk.red(`🐆 Task not found: ${taskname}`));
+        console.log(chalk.yellow("Available tasks:"));
+        for (const task of tasks) {
+          const isSupported = task.commands.some((command) =>
+            command.platforms.includes(PLATFORM),
+          );
+          if (isSupported) {
+            console.log(chalk.yellow(`- ${task.name}`));
+          }
+        }
       }
       process.exit(1);
     }
@@ -83,6 +96,19 @@ function runCommand(command: string) {
   });
 }
 
+const list = (): void => {
+  const config = configparser.parse();
+  const tasks = config.tasks;
+  let tasknames = tasks.map((task) => task.name);
+  tasknames = filterTasks(tasknames, tasks, true);
+  console.log(chalk.green("🐆 Available tasks:"));
+  for (const task of tasks) {
+    if (tasknames.indexOf(task.name) !== -1) {
+      console.log(chalk.green(`- ${task.name}`));
+    }
+  }
+};
+
 const run = async (tasknames: string[]): Promise<void> => {
   const config = configparser.parse();
   const tasks = config.tasks;
@@ -110,5 +136,6 @@ const run = async (tasknames: string[]): Promise<void> => {
 };
 
 export const taskrunner = {
+  list,
   run,
 };

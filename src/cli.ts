@@ -10,11 +10,23 @@ program
   .version(pkg.version);
 
 program
+  .command("list")
+  .alias("ls")
+  .description("list all available tasks")
+  .action(() => {
+    taskrunner.list();
+  });
+
+program
   .command("run")
   .description("run tasks")
-  .argument("<tasknames...>", "tasks to run")
+  .argument("[tasknames...]", "tasks to run")
   .action(async (files) => {
-    await taskrunner.run(files);
+    if (files.length === 0) {
+      taskrunner.list();
+    } else {
+      await taskrunner.run(files);
+    }
   });
 
 program

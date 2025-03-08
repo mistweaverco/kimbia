@@ -29,13 +29,13 @@ function runCommand(command: string) {
     child?.stdout.on("data", (data) => {
       // buffer to string conversion
       const str = data.toString();
-      console.log(str);
+      process.stdout.write(str);
       stdoutData += str;
     });
 
     child?.stderr.on("data", (data) => {
       const str = data.toString();
-      console.log(str);
+      process.stderr.write(str);
       stderrData += str;
     });
 
@@ -69,7 +69,7 @@ const run = async (tasknames: string[]): Promise<void> => {
     ) {
       return true;
     } else {
-      console.log(chalk.red(`Task not found: ${taskname}`));
+      console.log(chalk.red(`🐆 Task not found: ${taskname}`));
       console.log(chalk.yellow("Available tasks:"));
       for (const task of tasks) {
         console.log(chalk.yellow(`- ${task.name}`));
@@ -81,9 +81,9 @@ const run = async (tasknames: string[]): Promise<void> => {
     if (tasknames.indexOf(task.name) !== -1) {
       for (const command of task.commands) {
         if (command.platforms.indexOf(PLATFORM) !== -1) {
-          console.log(chalk.green(`Running task: ${task.name}`));
+          console.log(chalk.green(`🐆 Running task: ${task.name}`));
           for (const cmd of command.run) {
-            console.log(chalk.blue(`Running command: ${cmd}`));
+            console.log(chalk.blue(`🐆 Running command: ${cmd}`));
             try {
               await runCommand(cmd);
             } catch (error: unknown) {

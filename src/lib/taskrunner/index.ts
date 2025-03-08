@@ -124,7 +124,12 @@ const run = async (tasknames: string[]): Promise<void> => {
           if (command.parallel) {
             const commands = command.run.map((c) => c.split(" "));
             const promises = commands.map((c) => runCommand(c.join(" ")));
-            await Promise.all(promises);
+            try {
+              await Promise.all(promises);
+            } catch (error: unknown) {
+              const err = error as RunCommandResponse;
+              process.exit(err.code);
+            }
           } else {
             for (const cmd of command.run) {
               console.log(chalk.blue(`🐆 Running command: ${cmd}`));

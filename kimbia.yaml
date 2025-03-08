@@ -23,10 +23,7 @@ tasks:
           - mac
         run:
           - bun run build
-          - |
-            echo '{ "main": "dist/cli.cjs", "output": "dist/sea-prep.blob" }' \
-              > dist/sea-config.json
-          - node --experimental-sea-config dist/sea-config.json
+          - node --experimental-sea-config sea-config.json
 
       - platforms:
           - linux
@@ -39,7 +36,7 @@ tasks:
               --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
           - |
             gh release \
-              --create v$(jq -r .version package.json) \
+              create v$(jq -r .version package.json) \
               --generate-notes || true
             gh release upload \
               --clobber v$(jq -r .version package.json) \
@@ -56,7 +53,7 @@ tasks:
             --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
           - |
             gh release \
-              --create v$(jq -r .version package.json) \
+              create v$(jq -r .version package.json) \
               --generate-notes || true
             gh release upload \
               --clobber v$(jq -r .version package.json) \
@@ -69,14 +66,14 @@ tasks:
         run:
           - cp $(command -v node) dist/kimbia-macos-arm64
           - codesign --remove-signature dist/kimbia-macos-arm64
+          - chmod 755 dist/kimbia-macos-arm64
           - |
-            npx postject dist/kimbia-macos-arm64 \
-            NODE_SEA_BLOB dist/sea-prep.blob \
-            --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
-            --macho-segment-name NODE_SEA
+            postject dist/kimbia-macos-arm64 NODE_SEA_BLOB dist/sea-prep.blob \
+              --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
+              --macho-segment-name NODE_SEA
           - |
             gh release \
-              --create v$(jq -r .version package.json) \
+              create v$(jq -r .version package.json) \
               --generate-notes || true
             gh release upload \
               --clobber v$(jq -r .version package.json) \
@@ -89,14 +86,14 @@ tasks:
         run:
           - cp $(command -v node) dist/kimbia-macos-x64
           - codesign --remove-signature dist/kimbia-macos-x64
+          - chmod 755 dist/kimbia-macos-x64
           - |
-            npx postject dist/kimbia-macos-x64 \
-              NODE_SEA_BLOB dist/sea-prep.blob \
+            postject dist/kimbia-macos-x64 NODE_SEA_BLOB dist/sea-prep.blob \
               --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
               --macho-segment-name NODE_SEA
           - |
             gh release \
-              --create v$(jq -r .version package.json) \
+              create v$(jq -r .version package.json) \
               --generate-notes || true
             gh release upload \
               --clobber v$(jq -r .version package.json) \
@@ -104,24 +101,14 @@ tasks:
 
       - platforms:
           - windows
+        shell: pwsh
         arch:
           - x64
         run:
-          - node -e "require('fs').copyFileSync(process.execPath, 'kimbia-x64.exe')"
-          - signtool remove /s dist/kimbia-x64.exe
-          - |
-            postject dist/kimbia-x64.exe NODE_SEA_BLOB dist/sea-prep.blob `
-            --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
-          - |
-            try {
-              gh release upload v$(jq -r .version package.json) `
-                dist/kimbia-x64.exe --clobber --generate-release-notes
-            } catch (e) {
-              Write-Warning "Release already exists"
-            }
-            gh release upload `
-              --clobber v$(jq -r .version package.json) `
-              dist/kimbia-x64.exe
+          - node -e "require('fs').copyFileSync(process.execPath, 'dist/kimbia-x64.exe')"
+          - pwsh -ExecutionPolicy Bypass -File scripts\sign.ps1
+          - pwsh -ExecutionPolicy Bypass -File scripts\postiject.ps1
+          - pwsh -ExecutionPolicy Bypass -File scripts\gh-release.ps1
 
   - name: web
     description: Run the website locally

@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
 ---
 tasks:
+
   - name: publish
     description: Publish the project
     commands:
@@ -11,6 +12,95 @@ tasks:
         run:
           - bun run build
           - bun publish
+
+  - name: release
+    description: Publish the project
+    commands:
+
+      - platforms:
+          - linux
+          - windows
+          - mac
+        run:
+          - bun run build
+          - |
+            echo '{ "main": "dist/cli.cjs", "output": "dist/sea-prep.blob" }' \
+              > dist/sea-config.json
+          - node --experimental-sea-config dist/sea-config.json
+
+      - platforms:
+          - linux
+        arch:
+          - arm64
+        run:
+          - cp $(command -v node) dist/kimbia-linux-arm64
+          - |
+            postject dist/kimbia-linux-arm64 NODE_SEA_BLOB dist/sea-prep.blob \
+              --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+          - |
+            gh release upload v$(jq -r .version package.json) \
+              dist/kimbia-linux-arm64 --clobber --generate-release-notes
+
+      - platforms:
+          - linux
+        arch:
+          - x64
+        run:
+          - cp $(command -v node) dist/kimbia-linux-x64
+          - |
+            postject dist/kimbia-linux-x64 NODE_SEA_BLOB dist/sea-prep.blob \
+            --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+          - |
+            gh release upload v$(jq -r .version package.json) \
+              dist/kimbia-linux-x64 --clobber --generate-release-notes
+
+      - platforms:
+          - mac
+        arch:
+          - arm64
+        run:
+          - cp $(command -v node) dist/kimbia-macos-arm64
+          - codesign --remove-signature dist/kimbia-macos-arm64
+          - |
+            npx postject dist/kimbia-macos-arm64 \
+            NODE_SEA_BLOB dist/sea-prep.blob \
+            --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
+            --macho-segment-name NODE_SEA
+          - |
+            gh release upload v$(jq -r .version package.json) \
+              dist/kimbia-macos-arm64 --clobber --generate-release-notes
+
+      - platforms:
+          - mac
+        arch:
+          - x64
+        run:
+          - cp $(command -v node) dist/kimbia-macos-x64
+          - codesign --remove-signature dist/kimbia-macos-x64
+          - |
+            npx postject dist/kimbia-macos-x64 \
+              NODE_SEA_BLOB dist/sea-prep.blob \
+              --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
+              --macho-segment-name NODE_SEA
+          - |
+            gh release upload v$(jq -r .version package.json) \
+              dist/kimbia-macos-x64 --clobber --generate-release-notes
+
+      - platforms:
+          - windows
+        arch:
+          - x64
+        run:
+          - node -e "require('fs').copyFileSync(process.execPath, 'kimbia-x64.exe')"
+          - signtool remove /s kimbia-x64.exe
+          - |
+            postject dist/kimbia-x64.exe NODE_SEA_BLOB dist/sea-prep.blob `
+            --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+          - |
+            gh release upload v$(jq -r .version package.json) `
+              dist/kimbia-x64.exe --clobber --generate-release-notes
+
+
   - name: web
     description: Run the website locally
     commands:

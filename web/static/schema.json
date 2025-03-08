@@ -44,6 +44,15 @@
                   "type": "boolean",
                   "description": "Whether to run the commands in parallel",
                   "default": false
+                },
+                "arch": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "The architecture on which to run the commands, defaults to all",
+                    "enum": ["x64", "arm64", "x86", "all"],
+                    "default": "all"
+                  }
                 }
               }
             },

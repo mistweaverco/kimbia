@@ -1,6 +1,9 @@
 import chalk from "chalk";
+import dotenv from "dotenv";
 import { configparser, Task } from "./../configparser/";
 import { spawn } from "child_process";
+
+dotenv.config();
 
 const PLATFORM =
   process.platform === "win32"
@@ -8,6 +11,9 @@ const PLATFORM =
     : process.platform === "darwin"
       ? "mac"
       : "linux";
+
+const ARCH =
+  process.arch === "x64" ? "x64" : process.arch === "arm64" ? "arm64" : "x86";
 
 interface RunCommandResponse {
   code: number;
@@ -23,8 +29,12 @@ function filterTasks(
     const foundTask = tasks.find((task) => task.name === taskname);
 
     if (foundTask) {
-      const isSupported = foundTask.commands.some((command) =>
-        command.platforms.includes(PLATFORM),
+      const isSupported = foundTask.commands.some(
+        (command) =>
+          command.platforms.includes(PLATFORM) &&
+          (command.arch === undefined ||
+            command.arch.includes("all") ||
+            command.arch.includes(ARCH)),
       );
 
       if (isSupported) {
@@ -33,7 +43,7 @@ function filterTasks(
         if (!quiet) {
           console.log(
             chalk.yellow(
-              `🐆 Task "${taskname}" found, but not supported on platform "${PLATFORM}".`,
+              `🐆 Task "${taskname}" found, but not supported on platform "${PLATFORM} @ ${ARCH}".`,
             ),
           );
         }

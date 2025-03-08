@@ -7,6 +7,7 @@ import readline from "readline";
 const CONFIG_FILENAME = "kimbia.yaml";
 
 type Platform = "linux" | "windows" | "mac";
+type Arch = "x64" | "arm64" | "x86" | "all";
 
 export interface Task {
   name: string;
@@ -14,6 +15,7 @@ export interface Task {
   commands: {
     platforms: Platform[];
     parallel?: boolean;
+    arch?: Arch[];
     run: string[];
   }[];
 }

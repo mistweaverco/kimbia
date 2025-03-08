@@ -1,52 +1,52 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["tasks"],
-  "properties": {
-    "tasks": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["name", "description", "commands"],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "The name of the task"
-          },
-          "description": {
-            "type": "string",
-            "description": "A description of what the task does"
-          },
-          "commands": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["platforms", "run"],
-              "properties": {
-                "platforms": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": ["linux", "mac", "windows"],
-                    "description": "The platform on which to run the commands"
-                  },
-                  "minItems": 1
-                },
-                "run": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "The command to run"
-                  },
-                  "minItems": 1
-                }
-              }
-            },
-            "minItems": 1
-          }
-        }
-      },
-      "minItems": 1
-    }
-  }
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": ["tasks"],
+	"properties": {
+		"tasks": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["name", "description", "commands"],
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "The name of the task"
+					},
+					"description": {
+						"type": "string",
+						"description": "A description of what the task does"
+					},
+					"commands": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"required": ["platforms", "run"],
+							"properties": {
+								"platforms": {
+									"type": "array",
+									"items": {
+										"type": "string",
+										"enum": ["linux", "mac", "windows"],
+										"description": "The platform on which to run the commands"
+									},
+									"minItems": 1
+								},
+								"run": {
+									"type": "array",
+									"items": {
+										"type": "string",
+										"description": "The command to run"
+									},
+									"minItems": 1
+								}
+							}
+						},
+						"minItems": 1
+					}
+				}
+			},
+			"minItems": 1
+		}
+	}
 }

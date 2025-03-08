@@ -55,7 +55,7 @@
 	<div class="hero-content text-center">
 		<div class="max-w-md">
 			<h1 class="text-5xl font-bold">Configure</h1>
-			<p class="py-6">Configure Kimbia using a simple configuration file <code>kimbia.yml</code>.</p>
+			<p class="py-6">Configure Kimbia using a simple configuration file <code>kimbia.yaml</code>.</p>
 			<pre><code class="language-bash" data-prismjs-copy="📋"
 					>kimbia init</code
 				></pre>

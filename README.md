@@ -17,9 +17,7 @@ A minimal cross-platform task runner.
 
 <p></p>
 
-Kimbia is swahili for "run". The logo shows a cheetah,
-which is the fastest land animal,
-symbolizing the speed of Kimbia.
+Kimbia is swahili for "run".
 
 <p></p>
 

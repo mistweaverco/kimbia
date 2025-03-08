@@ -35,9 +35,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
-          key: linux-bun-web-${{ hashFiles('**/bun.lockb') }}
+          key: linux-bun-web-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
-            linux-bun-web-${{ hashFiles('**/bun.lockb') }}
+            linux-bun-web-${{ hashFiles('**/bun.lock') }}
       - name: Install dependencies
         run: cd web && bun install --frozen-lockfile
       - name: Create Website

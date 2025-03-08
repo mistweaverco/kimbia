@@ -1,11 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mistweaverco/kimbia/refs/heads/main/schema.json
 ---
 tasks:
   - name: build
     description: Build the project
     commands:
       - platforms:
-        - linux
-        - mac
+          - linux
+          - mac
         run:
           - echo "Building on Linux/Mac"
           - echo "Building on Linux/Mac 2"
@@ -17,7 +18,7 @@ tasks:
           - echo "Building on Linux/Mac 8"
           - echo "Building on Linux/Mac 9"
       - platforms:
-        - windows
+          - windows
         run:
           - powershell -Command "Write-Host 'Building on Windows'"
 
@@ -25,9 +26,9 @@ tasks:
     description: Run the tests
     commands:
       - platforms:
-        - linux
-        - mac
-        - windows
+          - linux
+          - mac
+          - windows
         run:
           - bun run test
 
@@ -35,9 +36,8 @@ tasks:
     description: Deploy the project
     commands:
       - platforms:
-        - linux
-        - mac
-        - windows
+          - linux
+          - mac
+          - windows
         run:
           - tofu deploy
-

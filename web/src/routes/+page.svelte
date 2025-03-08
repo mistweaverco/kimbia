@@ -2,6 +2,7 @@
 	import Prism from 'prismjs';
 	import 'prismjs/plugins/toolbar/prism-toolbar';
 	import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard';
+	import 'prismjs/components/prism-json';
 	import 'prismjs/components/prism-yaml';
 	import 'prismjs/components/prism-bash';
 	import 'prismjs/themes/prism-okaidia.css';
@@ -126,10 +127,87 @@
 					>kimbia run lint test build deploy</code
 				></pre>
 			<p>
-				<a href="#get-involved" on:click={handleAnchorClick}
-					><button class="btn btn-secondary mt-5">Get involved</button></a
+				<a href="#why" on:click={handleAnchorClick}
+					><button class="btn btn-secondary mt-5">Why?</button></a
 				>
 			</p>
+		</div>
+	</div>
+</div>
+<div id="why" class="hero bg-base-200 min-h-screen">
+	<div class="hero-content text-center">
+		<div class="max-w-md">
+			<h1 class="text-5xl font-bold">Why?</h1>
+			<p class="py-6">What are the benefits of using Kimbia?</p>
+			<p class="py-6">
+				You can use Kimbia to run a series of tasks like linting, testing, building, and deploying
+				your application.
+			</p>
+			<p class="py-6">
+				You could also use npm scripts, but Kimbia is easier to use and reason about.
+			</p>
+			<p>
+				<a href="#example" on:click={handleAnchorClick}
+					><button class="btn btn-secondary mt-5">See example</button></a
+				>
+			</p>
+		</div>
+	</div>
+</div>
+<div id="example" class="hero bg-base-200 min-h-screen">
+	<div class="hero-content text-center">
+		<div class="max-w-md">
+			<h1 class="text-5xl font-bold">Example</h1>
+			<p class="py-6">See this npm script example:</p>
+			<pre><code class="language-json" data-prismjs-copy="📋"
+					>&lbrace;
+  "scripts": &lbrace;
+    "dev": "concurrently --kill-others-on-fail \"sudo caddy run\" \"cd ../auth-platform/ && direnv allow && eval \\\"$(direnv export bash)\\\" && bun run dev -- --host --port 5000\" \"cd dwh-startpage/ && direnv allow && eval \\\"$(direnv export bash)\\\" && export PY_ENV=development && python3 -m gunicorn --bind :8002 --log-level info --workers 1 --threads 8 --timeout 0 app:server\" \"cd data-xplorer/ && direnv allow && eval \\\"$(direnv export bash)\\\" && export PY_ENV=development && python3 -m gunicorn --bind :8000 --log-level info --workers 1 --threads 8 --timeout 0 app:server\" \"cd ext-sales-report/ && direnv allow && eval \\\"$(direnv export bash)\\\" && export PY_ENV=development && streamlit run Forecasting.py\""
+  &rbrace;,
+  "devDependencies": &lbrace;
+    "concurrently": "^8.0.0"
+  &rbrace;
+&rbrace;</code
+				></pre>
+			<p class="py-6">And now see the equivalent Kimbia configuration file:</p>
+			<pre><code class="language-yaml" data-prismjs-copy="📋"
+					>tasks:
+  - name: dev
+    description: Run the project in development mode
+    commands:
+      - platforms:
+          - linux
+          - mac
+        parallel: true
+        run:
+          - sudo caddy run
+          - |
+            cd ../auth-platform/ && \
+              direnv allow && \
+              eval "$(direnv export bash)" && \
+              bun run dev -- --host --port 5000
+          - |
+            cd dwh-startpage && \
+              direnv allow && \
+              eval "$(direnv export bash)" && \
+              export PY_ENV=development && \
+              python3 -m gunicorn --bind :8002 --log-level \
+                info --workers 1 --threads 8 --timeout 0 app:server
+          - |
+            cd data-xplorer && \
+              direnv allow && \
+              eval "$(direnv export bash)" && \
+              export PY_ENV=development && \
+              python3 -m gunicorn --bind :8000 --log-level \
+                info --workers 1 --threads 8 --timeout 0 app:server
+          - |
+            cd ext-sales-report && \
+              direnv allow && \
+              eval "$(direnv export bash)" && \
+              export PY_ENV=development && \
+              python3 -m streamlit run Forecasting.py</code
+				></pre>
+			<p class="py-6">Which one do you prefer, when it comes to readability and maintainability?</p>
 		</div>
 	</div>
 </div>

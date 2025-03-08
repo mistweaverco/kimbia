@@ -11,3 +11,11 @@ tasks:
         run:
           - bun run build
           - bun publish
+  - name: web
+    description: Run the website locally
+    commands:
+      - platforms:
+          - linux
+          - mac
+        run:
+          - cd web && bun install --frozen-lockfile && bun run dev

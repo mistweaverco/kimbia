@@ -38,6 +38,7 @@ npm install -g @mistweaverco/kimbia
 Start by creating a `kimbia.yaml` file in the root of your project:
 
 ```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mistweaverco/kimbia/refs/heads/main/schema.json
 ---
 tasks:
   - name: build

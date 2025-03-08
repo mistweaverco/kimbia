@@ -64,6 +64,7 @@ function runCommand(command: string) {
     try {
       child = spawn(cmd, args, {
         shell: true,
+        stdio: "inherit",
       });
     } catch (error: unknown) {
       reject({ code: 1, data: (error as Error).message });
@@ -71,14 +72,14 @@ function runCommand(command: string) {
     let stdoutData = "";
     let stderrData = "";
 
-    child?.stdout.on("data", (data) => {
+    child?.stdout?.on("data", (data) => {
       // buffer to string conversion
       const str = data.toString();
       process.stdout.write(str);
       stdoutData += str;
     });
 
-    child?.stderr.on("data", (data) => {
+    child?.stderr?.on("data", (data) => {
       const str = data.toString();
       process.stderr.write(str);
       stderrData += str;

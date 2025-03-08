@@ -62,7 +62,9 @@ function runCommand(command: string) {
   return new Promise((resolve, reject) => {
     let child;
     try {
-      child = spawn(cmd, args);
+      child = spawn(cmd, args, {
+        shell: true,
+      });
     } catch (error: unknown) {
       reject({ code: 1, data: (error as Error).message });
     }

@@ -1,34 +1,13 @@
 # yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
 ---
 tasks:
-  - name: lint+test
-    description: Lint the project
-    commands:
-      - platforms:
-          - linux
-          - windows
-          - mac
-        parallel: true
-        run:
-          - echo 'Linting project...' && sleep 5 && echo 'Project linted!'
-          - echo 'Test project...' && sleep 10 && echo 'Project tested!'
-  - name: build
-    description: Build the project
+  - name: publish
+    description: Publish the project
     commands:
       - platforms:
           - linux
           - windows
           - mac
         run:
-          - echo 'Building project...'
-          - echo 'Project built!'
-  - name: deploy
-    description: Deploy the project
-    commands:
-      - platforms:
-          - linux
-          - windows
-          - mac
-        run:
-          - echo 'Deploying project...'
-          - echo 'Project deployed!'
+          - bun run build
+          - bun publish

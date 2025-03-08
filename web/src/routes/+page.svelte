@@ -74,15 +74,32 @@
 	</div>
 </div>
 <div id="usage" class="hero bg-base-200 min-h-screen">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold">Usage</h1>
+      <p class="py-6">Run Kimbia using the tasks defined in the configuration file.</p>
+      <p class="py-6">
+        If one task fails, Kimbia will stop the execution and return the error code.
+      </p>
+      <pre><code class="language-bash" data-prismjs-copy="📋">kimbia run lint test build deploy</code
+      ></pre>
+      <p>
+        <a href="#get-involved" on:click={handleAnchorClick}
+        ><button class="btn btn-secondary mt-5">Get involved</button></a
+        >
+      </p>
+    </div>
+  </div>
+</div>
+<div id="get-involved" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Usage</h1>
-			<p class="py-6">Run Kimbia using the tasks defined in the configuration file.</p>
-			<p class="py-6">
-				If one task fails, Kimbia will stop the execution and return the error code.
-			</p>
-			<pre><code class="language-bash" data-prismjs-copy="📋">kimbia run lint test build deploy</code
-				></pre>
+			<h1 class="text-5xl font-bold">Get involved</h1>
+      <p class="py-6">Kimbia is open-source and we welcome contributions.</p>
+      <p>
+        <a class="text-secondary" href="https://github.com/mistweaverco/kimbia" target="_blank"
+          >github.com/mistweaverco/kimbia</a>
+      </p>
 		</div>
 	</div>
 </div>

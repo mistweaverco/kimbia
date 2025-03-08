@@ -53,51 +53,14 @@ pnpm install -g @mistweaverco/kimbia
 
 Start by creating a `kimbia.yaml` file in the root of your project:
 
-> [!INFO]
-> You can also use `kimbia init` to generate a `kimbia.yaml` file.
-
-```yaml
-# yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
----
-tasks:
-  - name: build
-    description: Build the project
-    commands:
-      - platforms:
-          - linux
-          - mac
-        run:
-          - make build
-      - platforms:
-          - windows
-        run:
-          - build.bat
-
-  - name: test
-    description: Run the tests
-    commands:
-      - platforms:
-          - linux
-          - mac
-          - windows
-        run:
-          - bun run test
-
-  - name: deploy
-    description: Deploy the project
-    commands:
-      - platforms:
-          - linux
-          - mac
-          - windows
-        run:
-          - tofu deploy
+```sh
+kimbia init
 ```
 
 Then run the tasks using the `kimbia` command:
 
 ```sh
-kimbia run build test deploy
+kimbia run lint test build deploy
 ```
 
 If one of the tasks fails,

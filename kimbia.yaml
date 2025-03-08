@@ -1,52 +1,34 @@
 # yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
 ---
 tasks:
-  - name: not-supported-on-linux
-    description: This task is not supported on Linux
+  - name: lint+test
+    description: Lint the project
     commands:
       - platforms:
+          - linux
           - windows
           - mac
+        parallel: true
         run:
-          - echo "This task is not supported on Linux"
-
+          - echo 'Linting project...' && sleep 5 && echo 'Project linted!'
+          - echo 'Test project...' && sleep 10 && echo 'Project tested!'
   - name: build
     description: Build the project
     commands:
       - platforms:
           - linux
+          - windows
           - mac
         run:
-          - echo "Building on Linux/Mac"
-          - echo "Building on Linux/Mac 2"
-          - echo "Building on Linux/Mac 3"
-          - echo "Building on Linux/Mac 4"
-          - echo "Building on Linux/Mac 5"
-          - echo "Building on Linux/Mac 6"
-          - echo "Building on Linux/Mac 7"
-          - echo "Building on Linux/Mac 8"
-          - echo "Building on Linux/Mac 9"
-      - platforms:
-          - windows
-        run:
-          - powershell -Command "Write-Host 'Building on Windows'"
-
-  - name: test
-    description: Run the tests
-    commands:
-      - platforms:
-          - linux
-          - mac
-          - windows
-        run:
-          - bun run test
-
+          - echo 'Building project...'
+          - echo 'Project built!'
   - name: deploy
     description: Deploy the project
     commands:
       - platforms:
           - linux
-          - mac
           - windows
+          - mac
         run:
-          - tofu deploy
+          - echo 'Deploying project...'
+          - echo 'Project deployed!'

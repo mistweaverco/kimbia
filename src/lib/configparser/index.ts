@@ -13,6 +13,7 @@ export interface Task {
   description: string;
   commands: {
     platforms: Platform[];
+    parallel?: boolean;
     run: string[];
   }[];
 }
@@ -27,22 +28,16 @@ const init = (): void => {
   const config: Config = {
     tasks: [
       {
-        name: "lint",
+        name: "lint+test",
         description: "Lint the project",
         commands: [
           {
             platforms: ["linux", "windows", "mac"],
-            run: ["echo 'Linting project...'", "echo 'Project linted!'"],
-          },
-        ],
-      },
-      {
-        name: "test",
-        description: "Test the project",
-        commands: [
-          {
-            platforms: ["linux", "windows", "mac"],
-            run: ["echo 'Testing project...'", "echo 'Project tested!'"],
+            parallel: true,
+            run: [
+              "echo 'Linting project...' && sleep 5 && echo 'Project linted!'",
+              "echo 'Test project...' && sleep 10 && echo 'Project tested!'",
+            ],
           },
         ],
       },

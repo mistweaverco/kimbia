@@ -121,14 +121,20 @@ const run = async (tasknames: string[]): Promise<void> => {
       for (const command of task.commands) {
         if (command.platforms.indexOf(PLATFORM) !== -1) {
           console.log(chalk.green(`🐆 Running task: ${task.name}`));
-          for (const cmd of command.run) {
-            console.log(chalk.blue(`🐆 Running command: ${cmd}`));
-            try {
-              await runCommand(cmd);
-            } catch (error: unknown) {
-              const err = error as RunCommandResponse;
-              console.log(chalk.red(err.data));
-              process.exit(err.code);
+          if (command.parallel) {
+            const commands = command.run.map((c) => c.split(" "));
+            const promises = commands.map((c) => runCommand(c.join(" ")));
+            await Promise.all(promises);
+          } else {
+            for (const cmd of command.run) {
+              console.log(chalk.blue(`🐆 Running command: ${cmd}`));
+              try {
+                await runCommand(cmd);
+              } catch (error: unknown) {
+                const err = error as RunCommandResponse;
+                console.log(chalk.red(err.data));
+                process.exit(err.code);
+              }
             }
           }
         }

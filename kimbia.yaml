@@ -38,8 +38,12 @@ tasks:
             postject dist/kimbia-linux-arm64 NODE_SEA_BLOB dist/sea-prep.blob \
               --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
           - |
-            gh release upload v$(jq -r .version package.json) \
-              dist/kimbia-linux-arm64 --clobber --generate-release-notes
+            gh release \
+              --create v$(jq -r .version package.json) \
+              --generate-notes || true
+            gh release upload \
+              --clobber v$(jq -r .version package.json) \
+              dist/kimbia-linux-arm64
 
       - platforms:
           - linux
@@ -51,8 +55,12 @@ tasks:
             postject dist/kimbia-linux-x64 NODE_SEA_BLOB dist/sea-prep.blob \
             --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
           - |
-            gh release upload v$(jq -r .version package.json) \
-              dist/kimbia-linux-x64 --clobber --generate-release-notes
+            gh release \
+              --create v$(jq -r .version package.json) \
+              --generate-notes || true
+            gh release upload \
+              --clobber v$(jq -r .version package.json) \
+              dist/kimbia-linux-x64
 
       - platforms:
           - mac
@@ -67,8 +75,12 @@ tasks:
             --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
             --macho-segment-name NODE_SEA
           - |
-            gh release upload v$(jq -r .version package.json) \
-              dist/kimbia-macos-arm64 --clobber --generate-release-notes
+            gh release \
+              --create v$(jq -r .version package.json) \
+              --generate-notes || true
+            gh release upload \
+              --clobber v$(jq -r .version package.json) \
+              dist/kimbia-macos-arm64
 
       - platforms:
           - mac
@@ -83,8 +95,12 @@ tasks:
               --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
               --macho-segment-name NODE_SEA
           - |
-            gh release upload v$(jq -r .version package.json) \
-              dist/kimbia-macos-x64 --clobber --generate-release-notes
+            gh release \
+              --create v$(jq -r .version package.json) \
+              --generate-notes || true
+            gh release upload \
+              --clobber v$(jq -r .version package.json) \
+              dist/kimbia-macos-x64
 
       - platforms:
           - windows
@@ -92,14 +108,20 @@ tasks:
           - x64
         run:
           - node -e "require('fs').copyFileSync(process.execPath, 'kimbia-x64.exe')"
-          - signtool remove /s kimbia-x64.exe
+          - signtool remove /s dist/kimbia-x64.exe
           - |
             postject dist/kimbia-x64.exe NODE_SEA_BLOB dist/sea-prep.blob `
             --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
           - |
-            gh release upload v$(jq -r .version package.json) `
-              dist/kimbia-x64.exe --clobber --generate-release-notes
-
+            try {
+              gh release upload v$(jq -r .version package.json) `
+                dist/kimbia-x64.exe --clobber --generate-release-notes
+            } catch (e) {
+              Write-Warning "Release already exists"
+            }
+            gh release upload `
+              --clobber v$(jq -r .version package.json) `
+              dist/kimbia-x64.exe
 
   - name: web
     description: Run the website locally

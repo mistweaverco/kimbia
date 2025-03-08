@@ -1,0 +1,159 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+# Allow only one concurrent deployment,
+# skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want
+# to allow these production deployments to complete.
+concurrency:
+  group: "release"
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release-linux-x64:
+    name: Release Linux x64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: linux-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            linux-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Release
+        run: kimbia run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release-linux-arm64:
+    name: Release Linux arm64
+    runs-on: ubuntu-latest-arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: linux-arm64-bun-release-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            linux-arm64-bun-release-${{ hashFiles('**/bun.lock') }}
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Release
+        run: kimbia run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release-macos-x64:
+    name: Release MacOS x64
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: macos-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            macos-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Release
+        run: kimbia run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release-macos-arm64:
+    name: Release MacOS arm64
+    runs-on: macos-latest-arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: macos-arm64-bun-release-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            macos-arm64-bun-release-${{ hashFiles('**/bun.lock') }}
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Release
+        run: kimbia run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release-windows-x64:
+    name: Release Windows x64
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: windows-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            windows-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Release
+        run: kimbia run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish-npm:
+    name: Publish NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: linux-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            linux-x64-bun-release-${{ hashFiles('**/bun.lock') }}
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Publish
+        run: kimbia run publish
+        env:
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_CONFIG_TOKEN }}

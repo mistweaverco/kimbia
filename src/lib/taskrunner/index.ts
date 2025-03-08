@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { configparser } from "./../configparser/";
+import { configparser, Task } from "./../configparser/";
 import { spawn } from "child_process";
 
 const PLATFORM =
@@ -12,6 +12,36 @@ const PLATFORM =
 interface RunCommandResponse {
   code: number;
   data: string;
+}
+
+function filterTasks(tasknames: string[], tasks: Task[]): string[] {
+  return tasknames.filter((taskname: string) => {
+    const foundTask = tasks.find((task) => task.name === taskname);
+
+    if (foundTask) {
+      const isSupported = foundTask.commands.some((command) =>
+        command.platforms.includes(PLATFORM),
+      );
+
+      if (isSupported) {
+        return true; // Task found and supported
+      } else {
+        console.log(
+          chalk.yellow(
+            `🐆 Task "${taskname}" found, but not supported on platform "${PLATFORM}".`,
+          ),
+        );
+        return false; // Task found, but not supported
+      }
+    } else {
+      console.log(chalk.red(`🐆 Task not found: ${taskname}`));
+      console.log(chalk.yellow("Available tasks:"));
+      for (const task of tasks) {
+        console.log(chalk.yellow(`- ${task.name}`));
+      }
+      process.exit(1);
+    }
+  });
 }
 
 function runCommand(command: string) {
@@ -57,26 +87,7 @@ const run = async (tasknames: string[]): Promise<void> => {
   const config = configparser.parse();
   const tasks = config.tasks;
   // Filter tasks that are available for the current platform
-  tasknames = tasknames.filter((taskname) => {
-    if (
-      tasks.find(
-        (task) =>
-          task.name === taskname &&
-          task.commands.find(
-            (command) => command.platforms.indexOf(PLATFORM) !== -1,
-          ),
-      )
-    ) {
-      return true;
-    } else {
-      console.log(chalk.red(`🐆 Task not found: ${taskname}`));
-      console.log(chalk.yellow("Available tasks:"));
-      for (const task of tasks) {
-        console.log(chalk.yellow(`- ${task.name}`));
-      }
-      process.exit(1);
-    }
-  });
+  tasknames = filterTasks(tasknames, tasks);
   for (const task of tasks) {
     if (tasknames.indexOf(task.name) !== -1) {
       for (const command of task.commands) {

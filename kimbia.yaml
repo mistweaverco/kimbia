@@ -1,6 +1,15 @@
 # yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
 ---
 tasks:
+  - name: not-supported-on-linux
+    description: This task is not supported on Linux
+    commands:
+      - platforms:
+          - windows
+          - mac
+        run:
+          - echo "This task is not supported on Linux"
+
   - name: build
     description: Build the project
     commands:

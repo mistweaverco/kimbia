@@ -55,44 +55,16 @@
 	<div class="hero-content text-center">
 		<div class="max-w-md">
 			<h1 class="text-5xl font-bold">Configure</h1>
-			<p class="py-6">Configure Kimbia using a simple configuration file (kimbia.yaml).</p>
-			<pre><code class="language-yaml" data-prismjs-copy="📋"
-					>yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
----
-tasks:
-  - name: build
-    description: Build the project
-    commands:
-      - platforms:
-          - linux
-          - mac
-        run:
-          - make build
-      - platforms:
-          - windows
-        run:
-          - build.bat
-
-  - name: test
-    description: Run the tests
-    commands:
-      - platforms:
-          - linux
-          - mac
-          - windows
-        run:
-          - bun run test
-
-  - name: deploy
-    description: Deploy the project
-    commands:
-      - platforms:
-          - linux
-          - mac
-          - windows
-        run:
-          - tofu deploy</code
+			<p class="py-6">Configure Kimbia using a simple configuration file <code>kimbia.yml</code>.</p>
+			<pre><code class="language-bash" data-prismjs-copy="📋"
+					>kimbia init</code
 				></pre>
+      <div role="alert" class="alert alert-info">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>This will generate a default configuration file for you.</span>
+      </div>
 			<p>
 				<a href="#usage" on:click={handleAnchorClick}
 					><button class="btn btn-primary mt-5">Usage</button></a
@@ -109,7 +81,7 @@ tasks:
 			<p class="py-6">
 				If one task fails, Kimbia will stop the execution and return the error code.
 			</p>
-			<pre><code class="language-bash" data-prismjs-copy="📋">kimbia run test build deploy</code
+			<pre><code class="language-bash" data-prismjs-copy="📋">kimbia run lint test build deploy</code
 				></pre>
 		</div>
 	</div>

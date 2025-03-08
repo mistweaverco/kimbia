@@ -1,6 +1,7 @@
 import pkg from "./../package.json";
 import { Command } from "commander";
 import { taskrunner } from "./lib/taskrunner";
+import { configparser } from "./lib/configparser";
 const program = new Command();
 
 program
@@ -14,6 +15,13 @@ program
   .argument("<tasknames...>", "tasks to run")
   .action(async (files) => {
     await taskrunner.run(files);
+  });
+
+program
+  .command("init")
+  .description("initialize a new kimbia.yaml file")
+  .action(() => {
+    configparser.init();
   });
 
 program.parse();

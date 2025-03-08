@@ -31,6 +31,24 @@ Via npm:
 npm install -g @mistweaverco/kimbia
 ```
 
+Via yarn:
+
+```sh
+yarn global add @mistweaverco/kimbia
+```
+
+Via bun
+
+```sh
+bun install -g @mistweaverco/kimbia
+```
+
+Via pnpm
+
+```sh
+pnpm install -g @mistweaverco/kimbia
+```
+
 ## Usage
 
 Start by creating a `kimbia.yaml` file in the root of your project:

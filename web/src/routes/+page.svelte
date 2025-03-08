@@ -7,6 +7,8 @@
 	import 'prismjs/themes/prism-okaidia.css';
 	import { onMount } from 'svelte';
 
+  let installUsing = "npm";
+
 	const handleAnchorClick = (evt: Event) => {
 		evt.preventDefault();
 		const link = evt.currentTarget as HTMLAnchorElement;
@@ -17,6 +19,12 @@
 			behavior: 'smooth'
 		});
 	};
+
+  const onInstallUsingChange = (evt: Event) => {
+    const select = evt.currentTarget as HTMLSelectElement;
+    installUsing = select.value;
+  };
+
 	onMount(() => {
 		document.title = 'Kimbia';
 		Prism.highlightAll();
@@ -39,10 +47,25 @@
 	<div class="hero-content text-center">
 		<div class="max-w-md">
 			<h1 class="text-5xl font-bold">Install</h1>
-			<p class="py-6">Install Kimbia using npm.</p>
-			<pre><code class="language-bash" data-prismjs-copy="📋"
+			<p class="py-6">Install Kimbia using ...</p>
+      <select on:input={onInstallUsingChange} class="select select-bordered">
+        <option value="npm" selected>npm</option>
+        <option value="yarn">yarn</option>
+        <option value="bun">bun</option>
+        <option value="pnpm">pnpm</option>
+      </select>
+			<div class={installUsing === "npm" ? "": "hidden"}><pre><code class="language-bash" data-prismjs-copy="📋"
 					>npm install -g @mistweaverco/kimbia</code
-				></pre>
+				></pre></div>
+      <div class={installUsing === "yarn" ? "": "hidden"}><pre><code class="language-bash" data-prismjs-copy="📋"
+      >yarn add --global @mistweaverco/kimbia</code
+      ></pre></div>
+      <div class={installUsing === "bun" ? "": "hidden"}><pre><code class="language-bash" data-prismjs-copy="📋"
+      >bun install -g @mistweaverco/kimbia</code
+      ></pre></div>
+      <div class={installUsing === "pnpm" ? "": "hidden"}><pre><code class="language-bash" data-prismjs-copy="📋"
+      >pnpm install -g @mistweaverco/kimbia</code
+      ></pre></div>
 			<p>
 				<a href="#configure" on:click={handleAnchorClick}
 					><button class="btn btn-primary mt-5">Configure</button></a

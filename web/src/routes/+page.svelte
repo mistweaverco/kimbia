@@ -26,6 +26,7 @@
 <div id="start" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
+      <img src="/logo.svg" alt="Kimbia" class="w-64 mx-auto m-5" />
 			<h1 class="text-5xl font-bold">Kimbia</h1>
 			<p class="py-6">A minimal cross-platform task runner.</p>
 			<a href="#install" on:click={handleAnchorClick}

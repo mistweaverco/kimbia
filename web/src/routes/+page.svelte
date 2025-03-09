@@ -48,9 +48,9 @@
 <div id="install" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Install</h1>
+			<h1 class="text-5xl font-bold">Install ⚡</h1>
 			<p class="py-6">Install Kimbia using ...</p>
-			<select on:input={onInstallUsingChange} class="select select-bordered">
+			<select on:input={onInstallUsingChange} class="select select-bordered mb-5">
 				<option value="curl" selected>curl (linux/mac)</option>
 				<option value="wget">wget (linux/mac)</option>
 				<option value="pwsh">pwsh (windows)</option>
@@ -105,11 +105,13 @@
 <div id="configure" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Configure</h1>
+			<h1 class="text-5xl font-bold">Configure 🔧</h1>
 			<p class="py-6">
 				Configure Kimbia using a simple configuration file <code>kimbia.yaml</code>.
 			</p>
-			<pre><code class="language-bash" data-prismjs-copy="📋">kimbia init</code></pre>
+			<div class="mb-5">
+				<pre><code class="language-bash" data-prismjs-copy="📋">kimbia init</code></pre>
+			</div>
 			<div role="alert" class="alert alert-info">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +126,10 @@
 						d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 					></path>
 				</svg>
-				<span>This will generate a default configuration file for you.</span>
+				<span>
+					This will generate a default configuration file for you,
+					which you can customize to your needs.
+				</span>
 			</div>
 			<p>
 				<a href="#usage" on:click={handleAnchorClick}
@@ -137,7 +142,7 @@
 <div id="usage" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Usage</h1>
+			<h1 class="text-5xl font-bold">Usage 🐆</h1>
 			<p class="py-6">Run Kimbia using the tasks defined in the configuration file.</p>
 			<p class="py-6">
 				If one task fails, Kimbia will stop the execution and return the error code.
@@ -156,7 +161,7 @@
 <div id="why" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Why?</h1>
+			<h1 class="text-5xl font-bold">Why? 🤔</h1>
 			<p class="py-6">What are the benefits of using Kimbia?</p>
 			<p class="py-6">
 				You can use Kimbia to run a series of tasks like linting, testing, building, and deploying
@@ -176,7 +181,7 @@
 <div id="example" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Example</h1>
+			<h1 class="text-5xl font-bold">Example 🧐</h1>
 			<p class="py-6">See this npm script example:</p>
 			<pre><code class="language-json" data-prismjs-copy="📋"
 					>&lbrace;
@@ -233,7 +238,7 @@
 <div id="get-involved" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Get involved</h1>
+			<h1 class="text-5xl font-bold">Get involved 📦</h1>
 			<p class="py-6">Kimbia is open-source and we welcome contributions.</p>
 			<p>
 				<a class="text-secondary" href="https://github.com/mistweaverco/kimbia" target="_blank"

@@ -130,7 +130,12 @@ const run = async (tasknames: string[]): Promise<void> => {
   for (const task of tasks) {
     if (tasknames.indexOf(task.name) !== -1) {
       for (const command of task.commands) {
-        if (command.platforms.indexOf(PLATFORM) !== -1) {
+        if (
+          command.platforms.indexOf(PLATFORM) !== -1 &&
+          (command.arch === undefined ||
+            command.arch.includes("all") ||
+            command.arch.includes(ARCH))
+        ) {
           console.log(chalk.green(`🐆 Running task: ${task.name}`));
           if (command.parallel) {
             const commands = command.run.map((c) => c.split(" "));

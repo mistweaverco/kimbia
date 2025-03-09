@@ -48,6 +48,7 @@ const init = (): void => {
         description: "Build the project",
         commands: [
           {
+            arch: ["x64"],
             platforms: ["linux", "windows", "mac"],
             run: ["echo 'Building project...'", "echo 'Project built!'"],
           },

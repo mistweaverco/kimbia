@@ -9,6 +9,7 @@
 	import 'prismjs/themes/prism-okaidia.css';
 	import { onMount } from 'svelte';
 	import ExampleComponent from './Example.component.svelte';
+	import HeadComponent from '$lib/HeadComponent.svelte';
 
 	export let data;
 	let yamlContents = data.yaml;
@@ -33,8 +34,6 @@
 	};
 
 	onMount(() => {
-		document.title = 'Kimbia';
-
 		Prism.plugins.toolbar.registerButton('fullscreen-code', function (env) {
 			const button = document.createElement('button');
 			button.innerHTML = '🔍';
@@ -48,6 +47,8 @@
 		Prism.highlightAll();
 	});
 </script>
+
+<HeadComponent data={{ title: 'Kimbia', description: 'A minimal, cross platform task runner.' }} />
 
 <div id="start" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">

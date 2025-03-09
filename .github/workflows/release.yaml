@@ -99,7 +99,7 @@ jobs:
       - name: Setting up Apple certificate
         run: |
           echo "${{ secrets.APPLE_CERTIFICATE_BASE64 }}" > apple-cert.p12.base64
-          base64 -d apple-cert.p12.base64 > apple-cert.p12
+          cat apple-cert.p12.base64 | base64 -d > apple-cert.p12
       - name: Sign macOS binary
         uses: indygreg/apple-code-sign-action@v1
         with:
@@ -136,7 +136,7 @@ jobs:
       - name: Setting up Apple certificate
         run: |
           echo "${{ secrets.APPLE_CERTIFICATE_BASE64 }}" > apple-cert.p12.base64
-          base64 -d apple-cert.p12.base64 > apple-cert.p12
+          cat apple-cert.p12.base64 | base64 -d > apple-cert.p12
       - name: Sign macOS binary
         uses: indygreg/apple-code-sign-action@v1
         with:

@@ -5,10 +5,11 @@
 	import 'prismjs/components/prism-json';
 	import 'prismjs/components/prism-yaml';
 	import 'prismjs/components/prism-bash';
+	import 'prismjs/components/prism-powershell';
 	import 'prismjs/themes/prism-okaidia.css';
 	import { onMount } from 'svelte';
 
-	let installUsing = 'npm';
+	let installUsing = 'curl';
 
 	const handleAnchorClick = (evt: Event) => {
 		evt.preventDefault();
@@ -50,11 +51,29 @@
 			<h1 class="text-5xl font-bold">Install</h1>
 			<p class="py-6">Install Kimbia using ...</p>
 			<select on:input={onInstallUsingChange} class="select select-bordered">
-				<option value="npm" selected>npm</option>
+				<option value="curl" selected>curl (linux/mac)</option>
+				<option value="wget">wget (linux/mac)</option>
+				<option value="pwsh">pwsh (windows)</option>
+				<option value="npm">npm</option>
 				<option value="yarn">yarn</option>
 				<option value="bun">bun</option>
 				<option value="pnpm">pnpm</option>
 			</select>
+			<div class={installUsing === 'curl' ? '' : 'hidden'}>
+				<pre><code class="language-bash" data-prismjs-copy="📋"
+				>curl -sSL https://kimbia.mwco.app/install.sh | bash</code
+				></pre>
+			</div>
+			<div class={installUsing === 'wget' ? '' : 'hidden'}>
+				<pre><code class="language-bash" data-prismjs-copy="📋"
+				>wget -qO- https://kimbia.mwco.app/install.sh | bash</code
+				></pre>
+			</div>
+			<div class={installUsing === 'pwsh' ? '' : 'hidden'}>
+				<pre><code class="language-powershell" data-prismjs-copy="📋"
+				>irm https://kimbia.mwco.app/install.ps1 | pwsh -c -</code
+				></pre>
+			</div>
 			<div class={installUsing === 'npm' ? '' : 'hidden'}>
 				<pre><code class="language-bash" data-prismjs-copy="📋"
 						>npm install -g @mistweaverco/kimbia</code

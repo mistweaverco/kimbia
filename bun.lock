@@ -4,7 +4,6 @@
     "": {
       "name": "@mistweaverco/kimbia",
       "devDependencies": {
-        "@mistweaverco/kimbia": "1.11.0",
         "@rollup/plugin-commonjs": "^28.0.2",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^16.0.0",
@@ -19,7 +18,7 @@
         "eslint-config-prettier": "^10.0.1",
         "eslint-plugin-prettier": "^5.2.3",
         "js-yaml": "^4.1.0",
-        "postject": "1.0.0-alpha.6",
+        "postject": "^1.0.0-alpha.6",
         "prettier-plugin-svelte": "3.3.3",
         "prettier-plugin-tailwindcss": "0.6.11",
         "rollup": "^4.34.8",
@@ -69,8 +68,6 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.0", "", {}, "sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.25", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ=="],
-
-    "@mistweaverco/kimbia": ["@mistweaverco/kimbia@1.11.0", "", { "peerDependencies": { "typescript": "^5.7.3" }, "bin": { "kimbia": "dist/cli.cjs" } }, "sha512-abnuxyqI9WoixIkMt/hSchc5M8+13QfaS8YrUskdtProqjowSPEn60PtKC/oQRX0Bln/5/BE3a/0qdXCDcT6nw=="],
 
     "@nodelib/fs.scandir": ["@nodelib/fs.scandir@2.1.5", "", { "dependencies": { "@nodelib/fs.stat": "2.0.5", "run-parallel": "^1.1.9" } }, "sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g=="],
 

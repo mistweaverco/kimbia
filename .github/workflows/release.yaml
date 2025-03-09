@@ -40,8 +40,10 @@ jobs:
         run: |
           bun install --frozen-lockfile && \
           bun install -g postject @mistweaverco/kimbia
-      - name: Release
-        run: kimbia run release
+      - name: Create Release
+        run: kimbia run create-release
+      - name: Upload Release
+        run: kimbia run upload-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release-linux-arm64:
@@ -65,8 +67,10 @@ jobs:
         run: |
           bun install --frozen-lockfile && \
           bun install -g postject @mistweaverco/kimbia
-      - name: Release
-        run: kimbia run release
+      - name: Create Release
+        run: kimbia run create-release
+      - name: Upload Release
+        run: kimbia run upload-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release-macos-arm64:
@@ -90,8 +94,20 @@ jobs:
         run: |
           bun install --frozen-lockfile && \
           bun install -g postject @mistweaverco/kimbia
-      - name: Release
-        run: kimbia run release
+      - name: Create Release
+        run: kimbia run create-release
+      - name: Setting up Apple certificate
+        run: |
+          echo "${{ secrets.APPLE_CERTIFICATE_BASE64 }}" > apple-cert.p12.base64
+          base64 -d apple-cert.p12.base64 > apple-cert.p12
+      - name: Sign macOS binary
+        uses: indygreg/apple-code-sign-action@v1
+        with:
+          input_path: dist/kimbia-macos-arm64
+          p12_file: apple-cert.p12
+          p12_password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      - name: Upload Release
+        run: kimbia run upload-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release-macos-x64:
@@ -115,8 +131,20 @@ jobs:
         run: |
           bun install --frozen-lockfile && \
           bun install -g postject @mistweaverco/kimbia
-      - name: Release
-        run: kimbia run release
+      - name: Create Release
+        run: kimbia run create-release
+      - name: Setting up Apple certificate
+        run: |
+          echo "${{ secrets.APPLE_CERTIFICATE_BASE64 }}" > apple-cert.p12.base64
+          base64 -d apple-cert.p12.base64 > apple-cert.p12
+      - name: Sign macOS binary
+        uses: indygreg/apple-code-sign-action@v1
+        with:
+          input_path: dist/kimbia-macos-x64
+          p12_file: apple-cert.p12
+          p12_password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      - name: Upload Release
+        run: kimbia run upload-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release-windows-x64:
@@ -143,8 +171,10 @@ jobs:
         run: |
           bun install --frozen-lockfile
           bun install -g postject @mistweaverco/kimbia
-      - name: Release
-        run: kimbia run release
+      - name: Create Release
+        run: kimbia run create-release
+      - name: Upload Release
+        run: kimbia run upload-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-npm:

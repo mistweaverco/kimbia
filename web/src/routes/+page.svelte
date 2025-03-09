@@ -8,6 +8,11 @@
 	import 'prismjs/components/prism-powershell';
 	import 'prismjs/themes/prism-okaidia.css';
 	import { onMount } from 'svelte';
+	import ExampleComponent from './Example.component.svelte';
+
+	export let data;
+	let yamlContents = data.yaml;
+	let jsonContents = data.json;
 
 	let installUsing = 'curl';
 
@@ -29,6 +34,17 @@
 
 	onMount(() => {
 		document.title = 'Kimbia';
+
+		Prism.plugins.toolbar.registerButton('fullscreen-code', function (env) {
+			const button = document.createElement('button');
+			button.innerHTML = '🔍';
+			button.addEventListener('click', function () {
+				env.element.parentNode.requestFullscreen();
+			});
+
+			return button;
+		});
+
 		Prism.highlightAll();
 	});
 </script>
@@ -60,38 +76,52 @@
 				<option value="pnpm">pnpm</option>
 			</select>
 			<div class={installUsing === 'curl' ? '' : 'hidden'}>
-				<pre><code class="language-bash" data-prismjs-copy="📋"
-				>curl -sSL https://kimbia.mwco.app/install.sh | bash</code
-				></pre>
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">curl -sSL https://kimbia.mwco.app/install.sh | bash</code
+					></pre>
 			</div>
 			<div class={installUsing === 'wget' ? '' : 'hidden'}>
-				<pre><code class="language-bash" data-prismjs-copy="📋"
-				>wget -qO- https://kimbia.mwco.app/install.sh | bash</code
-				></pre>
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">wget -qO- https://kimbia.mwco.app/install.sh | bash</code
+					></pre>
 			</div>
 			<div class={installUsing === 'pwsh' ? '' : 'hidden'}>
-				<pre><code class="language-powershell" data-prismjs-copy="📋"
-				>irm https://kimbia.mwco.app/install.ps1 | pwsh -c -</code
-				></pre>
+				<pre><code
+						class="language-powershell"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">irm https://kimbia.mwco.app/install.ps1 | pwsh -c -</code
+					></pre>
 			</div>
 			<div class={installUsing === 'npm' ? '' : 'hidden'}>
-				<pre><code class="language-bash" data-prismjs-copy="📋"
-						>npm install -g @mistweaverco/kimbia</code
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">npm install -g @mistweaverco/kimbia</code
 					></pre>
 			</div>
 			<div class={installUsing === 'yarn' ? '' : 'hidden'}>
-				<pre><code class="language-bash" data-prismjs-copy="📋"
-						>yarn add --global @mistweaverco/kimbia</code
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">yarn add --global @mistweaverco/kimbia</code
 					></pre>
 			</div>
 			<div class={installUsing === 'bun' ? '' : 'hidden'}>
-				<pre><code class="language-bash" data-prismjs-copy="📋"
-						>bun install -g @mistweaverco/kimbia</code
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">bun install -g @mistweaverco/kimbia</code
 					></pre>
 			</div>
 			<div class={installUsing === 'pnpm' ? '' : 'hidden'}>
-				<pre><code class="language-bash" data-prismjs-copy="📋"
-						>pnpm install -g @mistweaverco/kimbia</code
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">pnpm install -g @mistweaverco/kimbia</code
 					></pre>
 			</div>
 			<p>
@@ -110,7 +140,11 @@
 				Configure Kimbia using a simple configuration file <code>kimbia.yaml</code>.
 			</p>
 			<div class="mb-5">
-				<pre><code class="language-bash" data-prismjs-copy="📋">kimbia init</code></pre>
+				<pre><code
+						class="language-bash"
+						data-toolbar-order="copy-to-clipboard"
+						data-prismjs-copy="📋">kimbia init</code
+					></pre>
 			</div>
 			<div role="alert" class="alert alert-info">
 				<svg
@@ -127,8 +161,8 @@
 					></path>
 				</svg>
 				<span>
-					This will generate a default configuration file for you,
-					which you can customize to your needs.
+					This will generate a default configuration file for you, which you can customize to your
+					needs.
 				</span>
 			</div>
 			<p>
@@ -147,7 +181,7 @@
 			<p class="py-6">
 				If one task fails, Kimbia will stop the execution and return the error code.
 			</p>
-			<pre><code class="language-bash" data-prismjs-copy="📋"
+			<pre><code class="language-bash" data-toolbar-order="copy-to-clipboard" data-prismjs-copy="📋"
 					>kimbia run lint test build deploy</code
 				></pre>
 			<p>
@@ -168,7 +202,12 @@
 				your application.
 			</p>
 			<p class="py-6">
-				You could also use npm scripts, but Kimbia is easier to use and reason about.
+				You could also use a Makefile, bash- or npm-scripts, but Kimbia is easier to use and reason
+				about.
+			</p>
+			<p class="py-6">
+				Additionally, Kimbia supports dotenv files out of the box, is cross-platform, has
+				documentation built-in and a simple and clean configuration file format.
 			</p>
 			<p>
 				<a href="#example" on:click={handleAnchorClick}
@@ -178,63 +217,7 @@
 		</div>
 	</div>
 </div>
-<div id="example" class="hero bg-base-200 min-h-screen">
-	<div class="hero-content text-center">
-		<div class="max-w-md">
-			<h1 class="text-5xl font-bold">Example 🧐</h1>
-			<p class="py-6">See this npm script example:</p>
-			<pre><code class="language-json" data-prismjs-copy="📋"
-					>&lbrace;
-  "scripts": &lbrace;
-    "dev": "concurrently --kill-others-on-fail \"sudo caddy run\" \"cd ../auth-platform/ && direnv allow && eval \\\"$(direnv export bash)\\\" && bun run dev -- --host --port 5000\" \"cd dwh-startpage/ && direnv allow && eval \\\"$(direnv export bash)\\\" && export PY_ENV=development && python3 -m gunicorn --bind :8002 --log-level info --workers 1 --threads 8 --timeout 0 app:server\" \"cd data-xplorer/ && direnv allow && eval \\\"$(direnv export bash)\\\" && export PY_ENV=development && python3 -m gunicorn --bind :8000 --log-level info --workers 1 --threads 8 --timeout 0 app:server\" \"cd ext-sales-report/ && direnv allow && eval \\\"$(direnv export bash)\\\" && export PY_ENV=development && streamlit run Forecasting.py\""
-  &rbrace;,
-  "devDependencies": &lbrace;
-    "concurrently": "^8.0.0"
-  &rbrace;
-&rbrace;</code
-				></pre>
-			<p class="py-6">And now see the equivalent Kimbia configuration file:</p>
-			<pre><code class="language-yaml" data-prismjs-copy="📋"
-					>tasks:
-  - name: dev
-    description: Run the project in development mode
-    commands:
-      - platforms:
-          - linux
-          - mac
-        parallel: true
-        run:
-          - sudo caddy run
-          - |
-            cd ../auth-platform/ && \
-              direnv allow && \
-              eval "$(direnv export bash)" && \
-              bun run dev -- --host --port 5000
-          - |
-            cd dwh-startpage && \
-              direnv allow && \
-              eval "$(direnv export bash)" && \
-              export PY_ENV=development && \
-              python3 -m gunicorn --bind :8002 --log-level \
-                info --workers 1 --threads 8 --timeout 0 app:server
-          - |
-            cd data-xplorer && \
-              direnv allow && \
-              eval "$(direnv export bash)" && \
-              export PY_ENV=development && \
-              python3 -m gunicorn --bind :8000 --log-level \
-                info --workers 1 --threads 8 --timeout 0 app:server
-          - |
-            cd ext-sales-report && \
-              direnv allow && \
-              eval "$(direnv export bash)" && \
-              export PY_ENV=development && \
-              python3 -m streamlit run Forecasting.py</code
-				></pre>
-			<p class="py-6">Which one do you prefer, when it comes to readability and maintainability?</p>
-		</div>
-	</div>
-</div>
+<ExampleComponent {yamlContents} {jsonContents} />
 <div id="get-involved" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">

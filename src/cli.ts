@@ -18,14 +18,24 @@ program
   });
 
 program
+  .command("describe")
+  .alias("show")
+  .description("describe tasks")
+  .argument("[tasknames...]", "tasks to describe")
+  .option("-a, --all", "show all tasks")
+  .action((tasks, options) => {
+    taskrunner.describe(tasks, options);
+  });
+
+program
   .command("run")
   .description("run tasks")
   .argument("[tasknames...]", "tasks to run")
-  .action(async (files) => {
-    if (files.length === 0) {
+  .action(async (tasks) => {
+    if (tasks.length === 0) {
       taskrunner.list();
     } else {
-      await taskrunner.run(files);
+      await taskrunner.run(tasks);
     }
   });
 

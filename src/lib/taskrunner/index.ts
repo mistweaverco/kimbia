@@ -164,7 +164,50 @@ const run = async (tasknames: string[]): Promise<void> => {
   }
 };
 
+interface DescribeOptions {
+  all?: boolean;
+}
+
+const describe = (tasknames: string[], options: DescribeOptions): void => {
+  const config = configparser.parse();
+  const tasks = config.tasks;
+  if (!options.all) {
+    tasknames = filterTasks(tasknames, tasks, true);
+  }
+  for (const task of tasks) {
+    if (tasknames.length === 0 || tasknames.indexOf(task.name) !== -1) {
+      console.log(chalk.yellow(`🐆 Task: ${task.name}`));
+      console.log(`   Description: ${task.description}`);
+      for (const command of task.commands) {
+        if (
+          (!options.all && command.platforms.indexOf(PLATFORM) === -1) ||
+          (command.arch !== undefined &&
+            !command.arch.includes("all") &&
+            !command.arch.includes(ARCH))
+        ) {
+          continue;
+        }
+        console.log(chalk.cyan(`   Command:`));
+        console.log(`      Platforms: ${command.platforms.join(", ")}`);
+        if (command.arch) {
+          console.log(
+            chalk.redBright(`      Arch: ${command.arch.join(", ")}`),
+          );
+        }
+        if (command.parallel) {
+          console.log(chalk.redBright(`      Parallel: ${command.parallel}`));
+        }
+        for (const cmd of command.run) {
+          console.log(chalk.cyanBright(`        - ${cmd}`));
+        }
+      }
+    }
+    console.log();
+  }
+};
+
 export const taskrunner = {
+  describe,
   list,
   run,
 };

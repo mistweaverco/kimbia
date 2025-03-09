@@ -5,6 +5,7 @@
 
 div.code-toolbar {
 	position: relative;
+  display: grid;
 }
 div.code-toolbar > .toolbar {
 	position: absolute;

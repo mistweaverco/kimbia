@@ -10,8 +10,8 @@ div.code-toolbar {
 div.code-toolbar > .toolbar {
 	position: absolute;
 	z-index: 10;
-	top: 0.3em;
-	right: 0.2em;
+	top: -16px;
+	right: -16px;
 	transition: opacity 0.3s ease-in-out;
 	opacity: 1;
 }
@@ -22,7 +22,8 @@ div.code-toolbar > .toolbar > .toolbar-item > a {
 	cursor: pointer;
 }
 /* icon copy */
-div.code-toolbar > .toolbar > .toolbar-item > button > span {
+div.code-toolbar > .toolbar > .toolbar-item > button {
+  font-size: 2rem;
 	color: #e6caa8;
 }
 /* color of "Copied!" */

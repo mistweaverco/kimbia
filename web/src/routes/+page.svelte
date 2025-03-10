@@ -15,7 +15,7 @@
 	let yamlContents = data.yaml;
 	let jsonContents = data.json;
 
-	let installUsing = 'curl';
+	let installUsing = 'npm';
 
 	const handleAnchorClick = (evt: Event) => {
 		evt.preventDefault();
@@ -68,10 +68,10 @@
 			<h1 class="text-5xl font-bold">Install ⚡</h1>
 			<p class="py-6">Install Kimbia using ...</p>
 			<select on:input={onInstallUsingChange} class="select select-bordered mb-5">
-				<option value="curl" selected>curl (linux/mac)</option>
+				<option value="curl">curl (linux/mac)</option>
 				<option value="wget">wget (linux/mac)</option>
 				<option value="pwsh">pwsh (windows)</option>
-				<option value="npm">npm</option>
+				<option value="npm" selected>npm</option>
 				<option value="yarn">yarn</option>
 				<option value="bun">bun</option>
 				<option value="pnpm">pnpm</option>

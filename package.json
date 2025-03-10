@@ -1,6 +1,6 @@
 {
   "name": "@mistweaverco/kimbia",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
@@ -24,7 +24,6 @@
     "@types/js-yaml": "^4.0.9",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
-    "cli-markdown": "3.4.0",
     "commander": "^13.1.0",
     "dotenv": "16.4.7",
     "eslint": "^9.20.1",

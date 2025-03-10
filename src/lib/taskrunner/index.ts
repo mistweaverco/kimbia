@@ -2,7 +2,6 @@ import chalk from "chalk";
 import dotenv from "dotenv";
 import { configparser, Task } from "./../configparser/";
 import { spawn } from "child_process";
-import cliMd from "cli-markdown";
 
 dotenv.config();
 
@@ -208,7 +207,8 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
           if (options.disableMarkdown) {
             console.log(task.description);
           } else {
-            console.log(cliMd(task.description));
+            // TODO: implment markdown parsing
+            console.log(task.description);
           }
           console.log(chalk.yellow("-".repeat(80)));
           break;

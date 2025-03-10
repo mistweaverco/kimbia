@@ -24,6 +24,8 @@
     "@types/js-yaml": "^4.0.9",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
+    "chalk": "4.1.0",
+    "cli-html": "4.2.0",
     "commander": "^13.1.0",
     "dotenv": "16.4.7",
     "eslint": "^9.20.1",
@@ -39,8 +41,5 @@
   },
   "peerDependencies": {
     "typescript": "^5.7.3"
-  },
-  "trustedDependencies": [
-    "es5-ext"
-  ]
+  }
 }

@@ -10,7 +10,7 @@ const config = [
       format: "cjs",
       sourcemap: false,
     },
-    external: ["tree-sitter", "@mistweaverco/tree-sitter-kulala", "prettier"],
+    external: [],
     plugins: [
       json(),
       commonjs(),
@@ -18,9 +18,7 @@ const config = [
         tsconfig: "./tsconfig.json",
         noForceEmit: true,
       }),
-      resolve({
-        preferBuiltins: true,
-      }),
+      resolve(),
     ],
   },
 ];

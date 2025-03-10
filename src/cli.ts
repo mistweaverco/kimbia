@@ -22,7 +22,16 @@ program
   .alias("show")
   .description("describe tasks")
   .argument("[tasknames...]", "tasks to describe")
-  .option("-a, --all", "show all tasks")
+  .option(
+    "-a, --all",
+    "show all tasks, including those not available on this platform",
+  )
+  .option(
+    "-o, --output [format]",
+    "Output format, valid values are text or json.",
+    "text",
+  )
+  .option("--disableMarkdown", "Disable markdown rendering of task description")
   .action((tasks, options) => {
     taskrunner.describe(tasks, options);
   });

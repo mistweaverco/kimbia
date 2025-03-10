@@ -2,6 +2,7 @@ import chalk from "chalk";
 import dotenv from "dotenv";
 import { configparser, Task } from "./../configparser/";
 import { spawn } from "child_process";
+import cliMd from "cli-markdown";
 
 dotenv.config();
 
@@ -27,7 +28,6 @@ function filterTasks(
 ): string[] {
   return tasknames.filter((taskname: string) => {
     const foundTask = tasks.find((task) => task.name === taskname);
-
     if (foundTask) {
       const isSupported = foundTask.commands.some(
         (command) =>
@@ -164,20 +164,60 @@ const run = async (tasknames: string[]): Promise<void> => {
   }
 };
 
+enum OutputType {
+  TEXT = "text",
+  JSON = "json",
+}
+
 interface DescribeOptions {
   all?: boolean;
+  disableMarkdown?: boolean;
+  output?: OutputType;
+}
+
+interface JsonOutput {
+  name: string;
+  description: string;
+  commands: {
+    platforms: string[];
+    arch: string[];
+    parallel: boolean;
+    run: string[];
+  }[];
 }
 
 const describe = (tasknames: string[], options: DescribeOptions): void => {
   const config = configparser.parse();
   const tasks = config.tasks;
+  const output = options.output || OutputType.TEXT;
+  const jsonOutput: JsonOutput[] = [];
   if (!options.all) {
     tasknames = filterTasks(tasknames, tasks, true);
   }
   for (const task of tasks) {
     if (tasknames.length === 0 || tasknames.indexOf(task.name) !== -1) {
-      console.log(chalk.yellow(`🐆 Task: ${task.name}`));
-      console.log(`   Description: ${task.description}`);
+      const jsonTask: JsonOutput = {
+        name: "",
+        description: "",
+        commands: [],
+      };
+      switch (output) {
+        case OutputType.TEXT:
+          console.log(chalk.yellow(`🐆 Task: ${task.name}`));
+          console.log(chalk.yellow("-".repeat(80)));
+          if (options.disableMarkdown) {
+            console.log(task.description);
+          } else {
+            console.log(cliMd(task.description));
+          }
+          console.log(chalk.yellow("-".repeat(80)));
+          break;
+        case OutputType.JSON:
+          jsonTask.name = task.name;
+          jsonTask.description = task.description;
+          jsonTask.commands = [];
+          break;
+      }
       for (const command of task.commands) {
         if (
           (!options.all && command.platforms.indexOf(PLATFORM) === -1) ||
@@ -187,22 +227,44 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
         ) {
           continue;
         }
-        console.log(chalk.cyan(`   Command:`));
-        console.log(`      Platforms: ${command.platforms.join(", ")}`);
-        if (command.arch) {
-          console.log(
-            chalk.redBright(`      Arch: ${command.arch.join(", ")}`),
-          );
-        }
-        if (command.parallel) {
-          console.log(chalk.redBright(`      Parallel: ${command.parallel}`));
-        }
-        for (const cmd of command.run) {
-          console.log(chalk.cyanBright(`        - ${cmd}`));
+        switch (output) {
+          case OutputType.TEXT:
+            console.log(chalk.cyan(`   Command:`));
+            console.log(`      Platforms: ${command.platforms.join(", ")}`);
+            if (command.arch) {
+              console.log(
+                chalk.redBright(`      Arch: ${command.arch.join(", ")}`),
+              );
+            }
+            if (command.parallel) {
+              console.log(
+                chalk.redBright(`      Parallel: ${command.parallel}`),
+              );
+            }
+            for (const cmd of command.run) {
+              console.log(chalk.cyanBright(`        - ${cmd}`));
+            }
+            break;
+          case OutputType.JSON:
+            jsonTask.commands.push({
+              platforms: command.platforms,
+              arch: command.arch || [],
+              parallel: command.parallel || false,
+              run: command.run,
+            });
+            break;
         }
       }
+      if (output === OutputType.JSON && jsonTask.commands.length > 0) {
+        jsonOutput.push(jsonTask);
+      }
+      if (output === OutputType.TEXT) {
+        console.log();
+      }
     }
-    console.log();
+  }
+  if (output === OutputType.JSON) {
+    console.log(JSON.stringify(jsonOutput, null, 2));
   }
 };
 

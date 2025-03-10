@@ -144,7 +144,9 @@ tasks:
           - pwsh -ExecutionPolicy Bypass -File scripts\gh-release.ps1
 
   - name: web
-    description: Run the website locally
+    description: |
+      Run the website locally
+      You need [bun](https://bun.sh) to run this task.
     commands:
       - platforms:
           - linux

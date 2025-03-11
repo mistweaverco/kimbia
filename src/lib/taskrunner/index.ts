@@ -1,7 +1,12 @@
 import chalk from "chalk";
+import stripAnsi from "strip-ansi";
+import terminalSize from "terminal-size";
 import dotenv from "dotenv";
 import { configparser, Task } from "./../configparser/";
 import { spawn } from "child_process";
+import markdownit from "markdown-it";
+import cliHtml from "@mistweaverco/cli-html";
+const md = markdownit();
 
 dotenv.config();
 
@@ -170,7 +175,7 @@ enum OutputType {
 
 interface DescribeOptions {
   all?: boolean;
-  disableMarkdown?: boolean;
+  fancy: boolean;
   output?: OutputType;
 }
 
@@ -183,6 +188,54 @@ interface JsonOutput {
     parallel: boolean;
     run: string[];
   }[];
+}
+
+function createBorder(
+  content: string,
+  borderColor = chalk.gray,
+  backgroundColor = chalk.bgBlack,
+) {
+  const { columns: terminalWidth } = terminalSize();
+  const lines = content.split("\n");
+
+  const processedLines: string[] = [];
+  lines.forEach((line) => {
+    const strippedLine = stripAnsi(line);
+    if (strippedLine.length > terminalWidth - 4) {
+      for (let i = 0; i < strippedLine.length; i += terminalWidth - 4) {
+        processedLines.push(line.substring(i, i + terminalWidth - 4));
+      }
+    } else {
+      processedLines.push(line);
+    }
+  });
+
+  const maxWidth =
+    Math.max(...processedLines.map((line) => stripAnsi(line).length)) + 2;
+  const topLeft = borderColor("/");
+  const topRight = borderColor("\\");
+  const bottomLeft = borderColor("\\");
+  const bottomRight = borderColor("/");
+  const horizontalLine = borderColor("─");
+  const verticalLine = borderColor("│");
+
+  const horizontalBorder =
+    topLeft + horizontalLine.repeat(maxWidth + 1) + topRight;
+  let borderedContent = horizontalBorder + "\n";
+
+  processedLines.forEach((line) => {
+    const padding = " ".repeat(maxWidth - stripAnsi(line).length);
+    borderedContent +=
+      verticalLine +
+      backgroundColor(" " + line + padding) +
+      verticalLine +
+      "\n";
+  });
+
+  borderedContent +=
+    bottomLeft + horizontalLine.repeat(maxWidth + 1) + bottomRight;
+
+  return borderedContent;
 }
 
 const describe = (tasknames: string[], options: DescribeOptions): void => {
@@ -204,11 +257,10 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
         case OutputType.TEXT:
           console.log(chalk.yellow(`🐆 Task: ${task.name}`));
           console.log(chalk.yellow("-".repeat(80)));
-          if (options.disableMarkdown) {
+          if (!options.fancy) {
             console.log(task.description);
           } else {
-            // TODO: implment markdown parsing
-            console.log(task.description);
+            console.log(cliHtml(md.render(task.description)));
           }
           console.log(chalk.yellow("-".repeat(80)));
           break;
@@ -229,11 +281,11 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
         }
         switch (output) {
           case OutputType.TEXT:
-            console.log(chalk.cyan(`   Command:`));
-            console.log(`      Platforms: ${command.platforms.join(", ")}`);
+            console.log(chalk.cyan(`Command:`));
+            console.log(`  Platforms: ${command.platforms.join(", ")}`);
             if (command.arch) {
               console.log(
-                chalk.redBright(`      Arch: ${command.arch.join(", ")}`),
+                chalk.redBright(`  Arch: ${command.arch.join(", ")}`),
               );
             }
             if (command.parallel) {
@@ -242,7 +294,11 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
               );
             }
             for (const cmd of command.run) {
-              console.log(chalk.cyanBright(`        - ${cmd}`));
+              if (options.fancy) {
+                console.log(createBorder(cmd.trim()));
+              } else {
+                console.log(cmd.trim());
+              }
             }
             break;
           case OutputType.JSON:

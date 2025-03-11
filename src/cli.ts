@@ -31,7 +31,10 @@ program
     "Output format, valid values are text or json.",
     "text",
   )
-  .option("--disableMarkdown", "Disable markdown rendering of task description")
+  .option(
+    "--no-fancy",
+    "Disable markdown rendering of task description and fancy command output.",
+  )
   .action((tasks, options) => {
     taskrunner.describe(tasks, options);
   });

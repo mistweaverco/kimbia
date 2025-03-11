@@ -3,7 +3,10 @@
 tasks:
 
   - name: publish
-    description: Publish the project
+    description: |
+      Publish the project
+
+      You need [bun](https://bun.sh) to run this task.
     commands:
       - platforms:
           - linux
@@ -14,7 +17,21 @@ tasks:
           - bun publish
 
   - name: create-release
-    description: Publish the project
+    description: |
+      Publish the project
+
+      You need the following tools to run this task:
+      - [bun](https://bun.sh)
+      - node 22+ (for `postject`)
+      - codesign (for mac)
+        - to remove signature
+      - pwsh & signtool (for windows)
+        - to remove signature
+
+      Postject is a tool to inject a binary into a binary.
+
+      [See single executable applicaton](https://nodejs.org/api/single-executable-applications.html)
+      for more information.
     commands:
 
       - platforms:
@@ -81,7 +98,12 @@ tasks:
           - pwsh -ExecutionPolicy Bypass -File scripts\postiject.ps1
 
   - name: upload-release
-    description: Upload the release
+    description: |
+      Upload the release
+
+      You need the following tools to run this task:
+      - [gh](https://cli.github.com)
+      - [jq](https://stedolan.github.io/jq/)
     commands:
 
       - platforms:
@@ -146,6 +168,7 @@ tasks:
   - name: web
     description: |
       Run the website locally
+
       You need [bun](https://bun.sh) to run this task.
     commands:
       - platforms:

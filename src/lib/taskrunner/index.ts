@@ -318,9 +318,13 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
               );
             }
             if (command.parallel) {
-              console.log(
-                chalk.redBright(`      Parallel: ${command.parallel}`),
-              );
+              console.log(chalk.redBright(`  Parallel: ${command.parallel}`));
+            }
+            if (command.env && command.env.length > 0) {
+              console.log(chalk.green(`  Env:`));
+              for (const env of command.env) {
+                console.log(`    - ${env.key}: ${env.value}`);
+              }
             }
             for (const cmd of command.run) {
               if (options.fancy) {
@@ -336,6 +340,7 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
               arch: command.arch || [],
               parallel: command.parallel || false,
               run: command.run,
+              env: command.env || [],
             });
             break;
         }

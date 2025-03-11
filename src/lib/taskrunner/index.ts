@@ -212,10 +212,10 @@ function createBorder(
 
   const maxWidth =
     Math.max(...processedLines.map((line) => stripAnsi(line).length)) + 2;
-  const topLeft = borderColor("/");
-  const topRight = borderColor("\\");
-  const bottomLeft = borderColor("\\");
-  const bottomRight = borderColor("/");
+  const topLeft = borderColor("╭");
+  const topRight = borderColor("╮");
+  const bottomLeft = borderColor("╰");
+  const bottomRight = borderColor("╯");
   const horizontalLine = borderColor("─");
   const verticalLine = borderColor("│");
 

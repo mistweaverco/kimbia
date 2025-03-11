@@ -9,11 +9,17 @@ const CONFIG_FILENAME = "kimbia.yaml";
 type Platform = "linux" | "windows" | "mac";
 type Arch = "x64" | "arm64" | "x86" | "all";
 
+export interface TaskEnv {
+  key: string;
+  value: string;
+}
+
 export interface Task {
   name: string;
   description: string;
   commands: {
     platforms: Platform[];
+    env?: TaskEnv[];
     parallel?: boolean;
     arch?: Arch[];
     run: string[];

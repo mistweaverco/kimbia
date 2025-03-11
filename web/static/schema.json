@@ -45,6 +45,24 @@
                   "description": "Whether to run the commands in parallel",
                   "default": false
                 },
+                "env": {
+                  "type": "array",
+                  "description": "Environment variables to set for the commands",
+                  "items": {
+                    "type": "object",
+                    "required": ["key", "value"],
+                    "properties": {
+                      "key": {
+                        "type": "string",
+                        "description": "The name of the environment variable"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "The value of the environment variable"
+                      }
+                    }
+                  }
+                },
                 "arch": {
                   "type": "array",
                   "items": {

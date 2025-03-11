@@ -2,8 +2,8 @@ import chalk from "chalk";
 import stripAnsi from "strip-ansi";
 import terminalSize from "terminal-size";
 import dotenv from "dotenv";
-import { configparser, Task } from "./../configparser/";
-import { spawn } from "child_process";
+import { configparser, Task, TaskEnv } from "./../configparser/";
+import { execSync, spawn } from "child_process";
 import markdownit from "markdown-it";
 import cliHtml from "@mistweaverco/cli-html";
 const md = markdownit();
@@ -71,7 +71,32 @@ function filterTasks(
   });
 }
 
-function runCommand(command: string) {
+function extendEnv(env?: TaskEnv[]): { [key: string]: string } {
+  const extenedEnv: { [key: string]: string } = {};
+  if (!env) {
+    return extenedEnv;
+  }
+  for (const e of env) {
+    try {
+      let ex;
+      if (PLATFORM !== "windows") {
+        ex = execSync(`export ${e.key}=${e.value} && echo $${e.key}`);
+      } else {
+        ex = execSync(`set ${e.key}=${e.value} && echo %${e.key}%`);
+      }
+      extenedEnv[e.key] = ex.toString().trim();
+    } catch (error: unknown) {
+      console.log(chalk.red((error as Error).message));
+      extenedEnv[e.key] = e.value;
+    }
+  }
+  return extenedEnv;
+}
+
+function runCommand(
+  command: string,
+  env?: TaskEnv[],
+): Promise<RunCommandResponse> {
   const [cmd, ...args] = command.split(" ");
   return new Promise((resolve, reject) => {
     let child;
@@ -79,6 +104,7 @@ function runCommand(command: string) {
       child = spawn(cmd, args, {
         shell: true,
         stdio: "inherit",
+        env: { ...process.env, ...extendEnv(env) },
       });
     } catch (error: unknown) {
       reject({ code: 1, data: (error as Error).message });
@@ -143,7 +169,9 @@ const run = async (tasknames: string[]): Promise<void> => {
           console.log(chalk.green(`🐆 Running task: ${task.name}`));
           if (command.parallel) {
             const commands = command.run.map((c) => c.split(" "));
-            const promises = commands.map((c) => runCommand(c.join(" ")));
+            const promises = commands.map((c) =>
+              runCommand(c.join(" "), command.env),
+            );
             try {
               await Promise.all(promises);
             } catch (error: unknown) {
@@ -154,7 +182,7 @@ const run = async (tasknames: string[]): Promise<void> => {
             for (const cmd of command.run) {
               console.log(chalk.blue(`🐆 Running command: ${cmd}`));
               try {
-                await runCommand(cmd);
+                await runCommand(cmd, command.env);
               } catch (error: unknown) {
                 const err = error as RunCommandResponse;
                 console.log(chalk.red(err.data));
@@ -184,6 +212,7 @@ interface JsonOutput {
   description: string;
   commands: {
     platforms: string[];
+    env: TaskEnv[];
     arch: string[];
     parallel: boolean;
     run: string[];

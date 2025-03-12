@@ -21,7 +21,7 @@ Kimbia is swahili for "run".
 
 <p></p>
 
-</div>
-
 View the [website](https://mistweaverco.github.io/kimbia/) for a quick start guide or the
 [docs](https://mistweaverco.github.io/kimbia/docs/) for more information.
+
+</div>

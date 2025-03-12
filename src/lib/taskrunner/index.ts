@@ -80,9 +80,13 @@ function extendEnv(env?: TaskEnv[]): { [key: string]: string } {
     try {
       let ex;
       if (PLATFORM !== "windows") {
-        ex = execSync(`export ${e.key}=${e.value} && echo $${e.key}`);
+        ex = execSync(`export ${e.key}=${e.value} && echo $${e.key}`, {
+          env: { ...process.env, ...extenedEnv },
+        });
       } else {
-        ex = execSync(`set ${e.key}=${e.value} && echo %${e.key}%`);
+        ex = execSync(`set ${e.key}=${e.value} && echo %${e.key}%`, {
+          env: { ...process.env, ...extenedEnv },
+        });
       }
       extenedEnv[e.key] = ex.toString().trim();
     } catch (error: unknown) {

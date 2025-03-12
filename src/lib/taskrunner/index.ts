@@ -170,6 +170,10 @@ const run = async (tasknames: string[]): Promise<void> => {
             command.arch.includes("all") ||
             command.arch.includes(ARCH))
         ) {
+          if (task.env && task.env.length > 0) {
+            command.env = command.env || [];
+            command.env = [...task.env, ...command.env];
+          }
           console.log(chalk.green(`🐆 Running task: ${task.name}`));
           if (command.parallel) {
             const commands = command.run.map((c) => c.split(" "));
@@ -214,6 +218,7 @@ interface DescribeOptions {
 interface JsonOutput {
   name: string;
   description: string;
+  env?: TaskEnv[];
   commands: {
     platforms: string[];
     env: TaskEnv[];
@@ -295,12 +300,19 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
           } else {
             console.log(cliHtml(md.render(task.description)));
           }
+          if (task.env && task.env.length > 0) {
+            console.log(chalk.magenta(`Env:`));
+            for (const env of task.env) {
+              console.log(chalk.magenta(`- ${env.key}: ${env.value}`));
+            }
+          }
           console.log(chalk.yellow("-".repeat(80)));
           break;
         case OutputType.JSON:
           jsonTask.name = task.name;
           jsonTask.description = task.description;
           jsonTask.commands = [];
+          jsonTask.env = task.env || [];
           break;
       }
       for (const command of task.commands) {
@@ -311,6 +323,13 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
             !command.arch.includes(ARCH))
         ) {
           continue;
+        }
+        if (task.env && task.env.length > 0) {
+          command.env = command.env || [];
+          task.env = task.env.map((env) => {
+            return { ...env, inherited: true };
+          });
+          command.env = [...task.env, ...command.env];
         }
         switch (output) {
           case OutputType.TEXT:
@@ -327,7 +346,11 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
             if (command.env && command.env.length > 0) {
               console.log(chalk.green(`  Env:`));
               for (const env of command.env) {
-                console.log(`    - ${env.key}: ${env.value}`);
+                if (!env.inherited) {
+                  console.log(`    - ${env.key}: ${env.value}`);
+                } else {
+                  console.log(chalk.magenta(`    - ${env.key}: ${env.value}`));
+                }
               }
             }
             for (const cmd of command.run) {

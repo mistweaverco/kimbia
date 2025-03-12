@@ -60,10 +60,35 @@ tasks:
             value: my-project
           - key: GCP_SERVICE
             value: my-service
-          - key: GIT_COMMIT
+          - key: GIT_COMMIT_SHORT
             value: $(git rev-parse --short HEAD)
         run:
-          - echo "Deploying web application to $GCP_PROJECT/$GCP_SERVICE:$GIT_COMMIT"
+          - echo "Deploying web application to $GCP_PROJECT/$GCP_SERVICE:$GIT_COMMIT_SHORT"
+```
+
+## Inherit
+
+You can also inherit environment variables from the parent task,
+so that it is available to all child commands.
+
+```yaml
+# yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
+  - name: example
+    description: Just an example task
+    env:
+      - key: GIT_COMMIT_SHORT
+        value: $(git rev-parse --short HEAD)
+    commands:
+      - platforms:
+          - linux
+          - windows
+          - mac
+        env:
+          - key: NODE_ENV
+            value: test123
+        run:
+          - echo $GIT_COMMIT_SHORT
+          - echo $NODE_ENV
 ```
 
 ## Dynamic

@@ -12,11 +12,13 @@ type Arch = "x64" | "arm64" | "x86" | "all";
 export interface TaskEnv {
   key: string;
   value: string;
+  inherited?: boolean;
 }
 
 export interface Task {
   name: string;
   description: string;
+  env?: TaskEnv[];
   commands: {
     platforms: Platform[];
     env?: TaskEnv[];

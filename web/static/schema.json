@@ -17,6 +17,24 @@
             "type": "string",
             "description": "A description of what the task does"
           },
+          "env": {
+            "type": "array",
+            "description": "Environment variables to set for the commands",
+            "items": {
+              "type": "object",
+              "required": ["key", "value"],
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "The name of the environment variable"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "The value of the environment variable"
+                }
+              }
+            }
+          },
           "commands": {
             "type": "array",
             "items": {

@@ -2,6 +2,23 @@
 ---
 tasks:
 
+  - name: example
+    description: Just an example task
+    env:
+      - key: GIT_COMMIT_SHORT
+        value: $(git rev-parse HEAD)
+    commands:
+      - platforms:
+          - linux
+          - windows
+          - mac
+        env:
+          - key: NODE_ENV
+            value: test123
+        run:
+          - echo $GIT_COMMIT_SHORT
+          - echo $NODE_ENV
+
   - name: publish
     description: |
       Publish the project

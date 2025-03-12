@@ -29,7 +29,7 @@
                   "description": "The name of the environment variable"
                 },
                 "value": {
-                  "type": "string",
+                  "type": ["string", "boolean", "number"],
                   "description": "The value of the environment variable"
                 }
               }
@@ -71,7 +71,7 @@
                     "required": ["key", "value"],
                     "properties": {
                       "key": {
-                        "type": "string",
+                        "type": ["string", "boolean", "number"],
                         "description": "The name of the environment variable"
                       },
                       "value": {

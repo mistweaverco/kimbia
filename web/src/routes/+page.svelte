@@ -8,12 +8,7 @@
 	import 'prismjs/components/prism-powershell';
 	import 'prismjs/themes/prism-okaidia.css';
 	import { onMount } from 'svelte';
-	import ExampleComponent from './Example.component.svelte';
 	import HeadComponent from '$lib/HeadComponent.svelte';
-
-	export let data;
-	let yamlContents = data.yaml;
-	let jsonContents = data.json;
 
 	let installUsing = 'npm';
 
@@ -211,14 +206,13 @@
 				documentation built-in and a simple and clean configuration file format.
 			</p>
 			<p>
-				<a href="#example" on:click={handleAnchorClick}
-					><button class="btn btn-secondary mt-5">See example</button></a
+				<a href="#get-involved" on:click={handleAnchorClick}
+					><button class="btn btn-secondary mt-5">Get involved</button></a
 				>
 			</p>
 		</div>
 	</div>
 </div>
-<ExampleComponent {yamlContents} {jsonContents} />
 <div id="get-involved" class="hero bg-base-200 min-h-screen">
 	<div class="hero-content text-center">
 		<div class="max-w-md">

@@ -5,7 +5,7 @@
 
 div.code-toolbar {
 	position: relative;
-  display: grid;
+	display: grid;
 }
 div.code-toolbar > .toolbar {
 	position: absolute;
@@ -23,7 +23,7 @@ div.code-toolbar > .toolbar > .toolbar-item > a {
 }
 /* icon copy */
 div.code-toolbar > .toolbar > .toolbar-item > button {
-  font-size: 2rem;
+	font-size: 2rem;
 	color: #e6caa8;
 }
 /* color of "Copied!" */

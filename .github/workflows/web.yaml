@@ -41,12 +41,14 @@ jobs:
           key: linux-bun-web-${{ hashFiles('**/bun.lock') }}
           restore-keys: |
             linux-bun-web-${{ hashFiles('**/bun.lock') }}
-      - name: Install dependencies
-        run: cd web && bun install --frozen-lockfile
+      - name: Install docs dependencies
+        run: cd docs && bun install --frozen-lockfile
       - name: Create Docs
         run: cd docs && bun run build
       - name: Copy docs to website
         run: cp -r docs/build web/static/docs
+      - name: Install web dependencies
+        run: cd web && bun install --frozen-lockfile
       - name: Create Website
         run: cd web && bun run build
       - name: Setup Pages

@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - 'web/**'
+      - 'docs/**'
 
 # Allow only one concurrent deployment,
 # skipping runs queued between the run in-progress and latest queued.
@@ -42,6 +43,10 @@ jobs:
             linux-bun-web-${{ hashFiles('**/bun.lock') }}
       - name: Install dependencies
         run: cd web && bun install --frozen-lockfile
+      - name: Create Docs
+        run: cd docs && bun run build
+      - name: Copy docs to website
+        run: cp -r docs/build web/static/docs
       - name: Create Website
         run: cd web && bun run build
       - name: Setup Pages

@@ -225,9 +225,14 @@
 			<h1 class="text-5xl font-bold">Get involved 📦</h1>
 			<p class="py-6">Kimbia is open-source and we welcome contributions.</p>
 			<p>
-				<a class="text-secondary" href="https://github.com/mistweaverco/kimbia" target="_blank"
+				View the code at <a class="text-secondary" href="https://github.com/mistweaverco/kimbia"
 					>github.com/mistweaverco/kimbia</a
 				>
+			</p>
+			<p>
+				Check out the <a class="text-secondary" href="https://kimbia.mwco.app/docs"
+				>docs</a
+				>.
 			</p>
 		</div>
 	</div>

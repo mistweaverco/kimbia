@@ -1,3 +1,22 @@
+---
+sidebar_position: 3
+---
+
+# Configuration
+
+Kimbia is configured via a `kimbia.yaml` file in the root of your project.
+
+This file is used to define tasks and their associated commands.
+
+For a quick start, you can use the following command to generate a `kimbia.yaml` file:
+
+```sh
+kimbia init
+```
+
+The following is an example configuration:
+
+```yaml
 # yaml-language-server: $schema=https://kimbia.mwco.app/schema.json
 ---
 tasks:
@@ -177,14 +196,4 @@ tasks:
         run:
           - cd web && bun install --frozen-lockfile && bun run dev
 
-  - name: docs
-    description: |
-      Run the docs site locally
-
-      You need [bun](https://bun.sh) to run this task.
-    commands:
-      - platforms:
-          - linux
-          - mac
-        run:
-          - cd docs && docs install --frozen-lockfile && bun run start
+```

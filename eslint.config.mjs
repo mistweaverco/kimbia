@@ -12,5 +12,8 @@ export default [
   eslintPluginPrettierRecommended.default,
   {
     ignores: ["dist/**/*", "node_modules/**/*"],
+    rules: {
+      "no-unused-vars": ["warn", { caughtErrors: "ignore" }],
+    },
   },
 ];

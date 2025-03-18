@@ -1,6 +1,6 @@
 {
   "name": "@mistweaverco/kimbia",
-  "version": "1.23.0",
+  "version": "1.24.0",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
@@ -29,6 +29,7 @@
     "chalk": "4.1.0",
     "commander": "^13.1.0",
     "dotenv": "16.4.7",
+    "enquirer": "2.4.1",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",

@@ -36,7 +36,11 @@ program
     "Disable markdown rendering of task description and fancy command output.",
   )
   .action((tasks, options) => {
-    taskrunner.describe(tasks, options);
+    if (tasks.length === 0) {
+      taskrunner.listDescribe(options);
+    } else {
+      taskrunner.describe(tasks, options);
+    }
   });
 
 program
@@ -45,7 +49,7 @@ program
   .argument("[tasknames...]", "tasks to run")
   .action(async (tasks) => {
     if (tasks.length === 0) {
-      taskrunner.list();
+      taskrunner.listRun();
     } else {
       await taskrunner.run(tasks);
     }

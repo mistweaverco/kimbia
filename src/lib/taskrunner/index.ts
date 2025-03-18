@@ -6,6 +6,8 @@ import { configparser, Task, TaskEnv } from "./../configparser/";
 import { execSync, spawn } from "child_process";
 import markdownit from "markdown-it";
 import cliHtml from "@mistweaverco/cli-html";
+import Enquirer from "enquirer";
+const prompt = Enquirer.prompt;
 const md = markdownit();
 
 dotenv.config();
@@ -142,6 +144,36 @@ function runCommand(
     });
   });
 }
+
+const listRun = async (): Promise<void> => {
+  const config = configparser.parse();
+  const tasks = config.tasks;
+  let tasknames = tasks.map((task) => task.name);
+  tasknames = filterTasks(tasknames, tasks, true);
+  const p = (await prompt({
+    name: "tasks",
+    type: "multiselect",
+    message: "Select tasks to run",
+    choices: tasknames,
+  })) as { tasks: string[] };
+  await run(p.tasks);
+};
+
+const listDescribe = async (options: DescribeOptions): Promise<void> => {
+  const config = configparser.parse();
+  const tasks = config.tasks;
+  let tasknames = tasks.map((task) => task.name);
+  if (options.all) {
+    tasknames = filterTasks(tasknames, tasks, true);
+  }
+  const p = (await prompt({
+    name: "tasks",
+    type: "multiselect",
+    message: "Select tasks to describe",
+    choices: tasknames,
+  })) as { tasks: string[] };
+  describe(p.tasks, options);
+};
 
 const list = (): void => {
   const config = configparser.parse();
@@ -285,7 +317,7 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
     tasknames = filterTasks(tasknames, tasks, true);
   }
   for (const task of tasks) {
-    if (tasknames.length === 0 || tasknames.indexOf(task.name) !== -1) {
+    if (tasknames.indexOf(task.name) !== -1) {
       const jsonTask: JsonOutput = {
         name: "",
         description: "",
@@ -388,5 +420,7 @@ const describe = (tasknames: string[], options: DescribeOptions): void => {
 export const taskrunner = {
   describe,
   list,
+  listDescribe,
+  listRun,
   run,
 };
